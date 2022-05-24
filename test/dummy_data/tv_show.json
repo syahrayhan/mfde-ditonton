@@ -1,0 +1,26 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "backdrop_path": "/path.jpg",
+      "first_air_date": "2003-10-21",
+      "genre_ids": [
+        18
+      ],
+      "id": 1,
+      "name": "Name",
+      "origin_country": [
+        "CO"
+      ],
+      "original_language": "es",
+      "original_name": "Origin Name",
+      "overview": "Overview",
+      "popularity": 1.1,
+      "poster_path": "/path.jpg",
+      "vote_average": 7.6,
+      "vote_count": 1
+    }
+  ],
+  "total_pages": 51,
+  "total_results": 1002
+}
