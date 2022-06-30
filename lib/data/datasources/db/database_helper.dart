@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:ditonton/data/models/movie_table.dart';
-import 'package:ditonton/data/models/tv_show_table.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
@@ -22,7 +21,6 @@ class DatabaseHelper {
   }
 
   static const String _tblWatchlist = 'watchlist';
-  static const String _tblTvShowWatchlist = 'tv_show_watchlist';
   static const String _tblCache = 'cache';
 
   Future<Database> _initDb() async {
@@ -40,7 +38,8 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY,
         title TEXT,
         overview TEXT,
-        posterPath TEXT
+        posterPath TEXT,
+        dataType TEXT,
       );
     ''');
     await db.execute(
@@ -51,15 +50,6 @@ class DatabaseHelper {
         overview TEXT,
         posterPath TEXT,
         category TEXT
-      );
-    ''');
-    await db.execute(
-        '''
-      CREATE TABLE  $_tblTvShowWatchlist (
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        overview TEXT,
-        posterPath TEXT
       );
     ''');
   }
@@ -94,41 +84,6 @@ class DatabaseHelper {
       where: 'category = ?',
       whereArgs: [category],
     );
-  }
-
-  Future<void> insertTvShowWatchlist(TvShowTable movie) async {
-    final db = await database;
-    final movieJson = movie.toJson();
-    await db!.insert(_tblTvShowWatchlist, movieJson);
-  }
-
-  Future<List<Map<String, dynamic>>> getTvShowWatchlist() async {
-    final db = await database;
-    final List<Map<String, dynamic>> results = await db!.query(
-      _tblTvShowWatchlist,
-    );
-
-    return results;
-  }
-
-  Future<int> removeTvShowWatchlist(int id) async {
-    final db = await database;
-    return await db!.delete(
-      _tblTvShowWatchlist,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-  }
-
-  Future<Map<String, dynamic>?> getTvShowWatchlistById(int id) async {
-    final db = await database;
-    final List<Map<String, dynamic>> results = await db!.query(
-      _tblTvShowWatchlist,
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-
-    return results.isEmpty ? null : results.first;
   }
 
   Future<int> insertWatchlist(MovieTable movie) async {

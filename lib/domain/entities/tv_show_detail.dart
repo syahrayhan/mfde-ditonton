@@ -1,5 +1,4 @@
 import 'package:ditonton/domain/entities/genre.dart';
-import 'package:ditonton/domain/entities/last_episode_to_air.dart';
 import 'package:ditonton/domain/entities/season.dart';
 import 'package:equatable/equatable.dart';
 
@@ -15,7 +14,6 @@ class TvShowDetail extends Equatable {
     required this.inProduction,
     required this.languages,
     required this.lastAirDate,
-    required this.lastEpisodeToAir,
     required this.name,
     required this.numberOfEpisodes,
     required this.numberOfSeasons,
@@ -43,7 +41,6 @@ class TvShowDetail extends Equatable {
   final bool inProduction;
   final List<String> languages;
   final String lastAirDate;
-  final LastEpisodeToAir lastEpisodeToAir;
   final String name;
   final int numberOfEpisodes;
   final int numberOfSeasons;
@@ -71,7 +68,6 @@ class TvShowDetail extends Equatable {
         inProduction,
         languages,
         lastAirDate,
-        lastEpisodeToAir,
         name,
         numberOfEpisodes,
         numberOfSeasons,

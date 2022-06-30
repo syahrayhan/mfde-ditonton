@@ -4,11 +4,9 @@ import 'package:dartz/dartz.dart';
 import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/common/failure.dart';
 import 'package:ditonton/data/models/genre_model.dart';
-import 'package:ditonton/data/models/last_episode_to_air_model.dart';
 import 'package:ditonton/data/models/season_model.dart';
 import 'package:ditonton/data/models/tv_show_detail_model.dart';
 import 'package:ditonton/data/models/tv_show_model.dart';
-import 'package:ditonton/data/models/tv_show_table.dart';
 import 'package:ditonton/data/repositories/tv_show_repository_impl.dart';
 import 'package:ditonton/domain/entities/tv_show.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -20,14 +18,11 @@ import '../../helpers/test_helper.mocks.dart';
 void main() {
   late TvShowRepositoryImpl repository;
   late MockTvShowRemoteDataSource mockTvShowRemoteDataSource;
-  late MockTvShowLocalDataSource mockTvShowLocalDataSource;
 
   setUp(() {
     mockTvShowRemoteDataSource = MockTvShowRemoteDataSource();
-    mockTvShowLocalDataSource = MockTvShowLocalDataSource();
     repository = TvShowRepositoryImpl(
       remoteDataSource: mockTvShowRemoteDataSource,
-      localDataSource: mockTvShowLocalDataSource,
     );
   });
 
@@ -297,19 +292,6 @@ void main() {
       inProduction: true,
       languages: ["en"],
       lastAirDate: "2020-01-01",
-      lastEpisodeToAir: LastEpisodeToAirModel(
-        airDate: "2020-10-10",
-        episodeNumber: 1,
-        id: 1,
-        name: "name",
-        overview: "overview",
-        productionCode: "",
-        runtime: 43,
-        seasonNumber: 11,
-        stillPath: "/path.jpg",
-        voteAverage: 9,
-        voteCount: 2,
-      ),
       name: "name",
       numberOfEpisodes: 1,
       numberOfSeasons: 1,
@@ -375,82 +357,6 @@ void main() {
       verify(mockTvShowRemoteDataSource.getTvShowDetail(tId));
       expect(result,
           equals(Left(ConnectionFailure('Failed to connect to the network'))));
-    });
-  });
-
-  group('save watchlist', () {
-    test('should return success message when saving successful', () async {
-      // arrange
-      when(mockTvShowLocalDataSource
-              .insertWatchlist(TvShowTable.fromEntity(testTvShowDetail)))
-          .thenAnswer((_) async => 'Added to Watchlist');
-      // act
-      final result = await repository.saveTvShowWatchlist(testTvShowDetail);
-      // assert
-      expect(result, equals(Right('Added to Watchlist')));
-    });
-
-    test('should return DatabaseFailure when saving unsuccessful', () async {
-      // arrange
-      when(mockTvShowLocalDataSource
-              .insertWatchlist(TvShowTable.fromEntity(testTvShowDetail)))
-          .thenThrow(DatabaseException('Failed to remove watchlist'));
-      // act
-      final result = await repository.saveTvShowWatchlist(testTvShowDetail);
-      // assert
-      expect(
-          result, equals(Left(DatabaseFailure('Failed to remove watchlist'))));
-    });
-  });
-
-  group('remove watchlist', () {
-    test('should return success message when removing successful', () async {
-      // arrange
-      when(mockTvShowLocalDataSource
-              .removeWatchlist(TvShowTable.fromEntity(testTvShowDetail)))
-          .thenAnswer((_) async => 'Removed from Watchlist');
-      // act
-      final result = await repository.removeTvShowWatchlist(testTvShowDetail);
-      // assert
-      expect(result, equals(Right('Removed from Watchlist')));
-    });
-
-    test('should return DatabaseFailure when removing unsuccessful', () async {
-      // arrange
-      when(mockTvShowLocalDataSource
-              .removeWatchlist(TvShowTable.fromEntity(testTvShowDetail)))
-          .thenThrow(DatabaseException('Failed to remove watchlist'));
-      // act
-      final result = await repository.removeTvShowWatchlist(testTvShowDetail);
-      // assert
-      expect(
-          result, equals(Left(DatabaseFailure('Failed to remove watchlist'))));
-    });
-  });
-
-  group('get watchlist status', () {
-    test('should return watch status whether data is found', () async {
-      // arrange
-      final tId = 1;
-      when(mockTvShowLocalDataSource.getTvShowById(tId))
-          .thenAnswer((_) async => null);
-      // act
-      final result = await repository.isAddedToTvShowWatchlist(tId);
-      // assert
-      expect(result, false);
-    });
-  });
-
-  group('get watchlist tv show', () {
-    test('should return list of tv show', () async {
-      // arrange
-      when(mockTvShowLocalDataSource.getWatchlistTvShows())
-          .thenAnswer((_) async => [testTvShowTable]);
-      // act
-      final result = await repository.getTvShowWatchlist();
-      // assert
-      final resultList = result.getOrElse(() => []);
-      expect(resultList, [testWatchlistTvShow]);
     });
   });
 }

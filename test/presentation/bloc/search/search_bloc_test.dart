@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ditonton/common/failure.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/search_movies.dart';
-import 'package:ditonton/presentation/bloc/search_bloc.dart';
+import 'package:ditonton/presentation/bloc/movie_search/search_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -51,7 +51,7 @@ void main() {
       return searchBloc;
     },
     act: (bloc) => bloc.add(OnQueryChanged(tQuery)),
-    wait: const Duration(milliseconds: 1500),
+    wait: const Duration(milliseconds: 500),
     expect: () => [
       SearchLoading(),
       SearchHasData(tMovieList),
@@ -69,7 +69,7 @@ void main() {
       return searchBloc;
     },
     act: (bloc) => bloc.add(OnQueryChanged(tQuery)),
-    wait: const Duration(milliseconds: 1500),
+    wait: const Duration(milliseconds: 500),
     expect: () => [
       SearchLoading(),
       SearchError('Server Failure'),

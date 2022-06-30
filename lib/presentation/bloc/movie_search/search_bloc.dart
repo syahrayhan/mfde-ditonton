@@ -26,6 +26,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           emit(SearchHasData(data));
         },
       );
-    }, transformer: debounce(const Duration(milliseconds: 1500)));
+    }, transformer: debounce(const Duration(milliseconds: 500)));
   }
 }

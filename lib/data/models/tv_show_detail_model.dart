@@ -1,5 +1,4 @@
 import 'package:ditonton/data/models/genre_model.dart';
-import 'package:ditonton/data/models/last_episode_to_air_model.dart';
 import 'package:ditonton/data/models/season_model.dart';
 import 'package:ditonton/domain/entities/tv_show_detail.dart';
 import 'package:equatable/equatable.dart';
@@ -16,7 +15,6 @@ class TvShowDetailModel extends Equatable {
     required this.inProduction,
     required this.languages,
     required this.lastAirDate,
-    required this.lastEpisodeToAir,
     required this.name,
     required this.numberOfEpisodes,
     required this.numberOfSeasons,
@@ -44,7 +42,6 @@ class TvShowDetailModel extends Equatable {
   final bool inProduction;
   final List<String> languages;
   final String lastAirDate;
-  final LastEpisodeToAirModel lastEpisodeToAir;
   final String name;
   final int numberOfEpisodes;
   final int numberOfSeasons;
@@ -74,8 +71,6 @@ class TvShowDetailModel extends Equatable {
         inProduction: json["in_production"],
         languages: List<String>.from(json["languages"].map((x) => x)),
         lastAirDate: json["last_air_date"],
-        lastEpisodeToAir:
-            LastEpisodeToAirModel.fromJson(json["last_episode_to_air"]),
         name: json["name"],
         numberOfEpisodes: json["number_of_episodes"],
         numberOfSeasons: json["number_of_seasons"],
@@ -105,7 +100,6 @@ class TvShowDetailModel extends Equatable {
         "in_production": inProduction,
         "languages": List<dynamic>.from(languages.map((x) => x)),
         "last_air_date": lastAirDate,
-        "last_episode_to_air": lastEpisodeToAir.toJson(),
         "name": name,
         "number_of_episodes": numberOfEpisodes,
         "number_of_seasons": numberOfSeasons,
@@ -135,7 +129,6 @@ class TvShowDetailModel extends Equatable {
       inProduction: this.inProduction,
       languages: this.languages,
       lastAirDate: this.lastAirDate,
-      lastEpisodeToAir: this.lastEpisodeToAir.toEntity(),
       name: this.name,
       numberOfEpisodes: this.numberOfEpisodes,
       numberOfSeasons: this.numberOfSeasons,
@@ -166,7 +159,6 @@ class TvShowDetailModel extends Equatable {
         inProduction,
         languages,
         lastAirDate,
-        lastEpisodeToAir,
         name,
         numberOfEpisodes,
         numberOfSeasons,

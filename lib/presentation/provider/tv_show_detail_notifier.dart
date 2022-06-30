@@ -3,9 +3,6 @@ import 'package:ditonton/domain/entities/tv_show.dart';
 import 'package:ditonton/domain/entities/tv_show_detail.dart';
 import 'package:ditonton/domain/usecases/get_tv_show_detail.dart';
 import 'package:ditonton/domain/usecases/get_tv_show_recommendations.dart';
-import 'package:ditonton/domain/usecases/get_tv_watchlist_status.dart';
-import 'package:ditonton/domain/usecases/remove_tv_show_watchlist.dart';
-import 'package:ditonton/domain/usecases/save_tv_show_watchlist.dart';
 import 'package:flutter/cupertino.dart';
 
 class TvShowDetailNotifier extends ChangeNotifier {
@@ -14,16 +11,10 @@ class TvShowDetailNotifier extends ChangeNotifier {
 
   final GetTvShowDetail getTvShowDetail;
   final GetTvShowRecommendations getTvShowRecommendations;
-  final GetTvWatchlistStatus getTvWatchlistStatus;
-  final SaveTvShowWatchlist saveTvShowWatchlist;
-  final RemoveTvShowWatchlist removeTvShowWatchlist;
 
   TvShowDetailNotifier({
     required this.getTvShowDetail,
     required this.getTvShowRecommendations,
-    required this.getTvWatchlistStatus,
-    required this.saveTvShowWatchlist,
-    required this.removeTvShowWatchlist,
   });
 
   late TvShowDetail _tvShowDetail;
@@ -75,37 +66,5 @@ class TvShowDetailNotifier extends ChangeNotifier {
         notifyListeners();
       },
     );
-  }
-
-  String _watchlistMessage = '';
-  String get watchlistMessage => _watchlistMessage;
-
-  Future<void> addTvShowToWatchlist(TvShowDetail tvShowId) async {
-    final result = await saveTvShowWatchlist.execute(tvShowId);
-
-    await result.fold((failure) async {
-      _watchlistMessage = failure.message;
-    }, (success) async {
-      _watchlistMessage = success;
-    });
-    await loadTvShowWatchlistStatus(tvShowId.id);
-  }
-
-  Future<void> removeTvShowFromWatchlist(TvShowDetail tvShowId) async {
-    final result = await removeTvShowWatchlist.execute(tvShowId);
-
-    await result.fold((failure) async {
-      _watchlistMessage = failure.message;
-    }, (success) async {
-      _watchlistMessage = success;
-    });
-
-    await loadTvShowWatchlistStatus(tvShowId.id);
-  }
-
-  Future<void> loadTvShowWatchlistStatus(int id) async {
-    final result = await getTvWatchlistStatus.execute(id);
-    _isAddedtoWatchlist = result;
-    notifyListeners();
   }
 }

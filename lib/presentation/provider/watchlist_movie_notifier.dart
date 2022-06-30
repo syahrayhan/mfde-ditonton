@@ -2,7 +2,6 @@ import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/entities/tv_show.dart';
 import 'package:ditonton/domain/usecases/get_watchlist_movies.dart';
-import 'package:ditonton/domain/usecases/get_watchlist_tv_show.dart';
 import 'package:flutter/foundation.dart';
 
 class WatchlistMovieNotifier extends ChangeNotifier {
@@ -23,11 +22,9 @@ class WatchlistMovieNotifier extends ChangeNotifier {
 
   WatchlistMovieNotifier({
     required this.getWatchlistMovies,
-    required this.getWatchlistTvShow,
   });
 
   final GetWatchlistMovies getWatchlistMovies;
-  final GetWatchlistTvShow getWatchlistTvShow;
 
   Future<void> fetchWatchlistMovies() async {
     _watchlistState = RequestState.Loading;
@@ -43,25 +40,6 @@ class WatchlistMovieNotifier extends ChangeNotifier {
       (moviesData) {
         _watchlistState = RequestState.Loaded;
         _watchlistMovies = moviesData;
-        notifyListeners();
-      },
-    );
-  }
-
-  Future<void> fetchWatchlistTvShow() async {
-    _watchlistTvShowState = RequestState.Loading;
-    notifyListeners();
-
-    final result = await getWatchlistTvShow.execute();
-    result.fold(
-      (failure) {
-        _watchlistTvShowState = RequestState.Error;
-        _message = failure.message;
-        notifyListeners();
-      },
-      (tvShowData) {
-        _watchlistTvShowState = RequestState.Loaded;
-        _watchListTvShow = tvShowData;
         notifyListeners();
       },
     );

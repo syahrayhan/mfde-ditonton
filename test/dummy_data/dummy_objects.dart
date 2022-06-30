@@ -1,7 +1,7 @@
+import 'package:ditonton/common/data_enum.dart';
 import 'package:ditonton/data/models/movie_table.dart';
 import 'package:ditonton/data/models/tv_show_table.dart';
 import 'package:ditonton/domain/entities/genre.dart';
-import 'package:ditonton/domain/entities/last_episode_to_air.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/entities/movie_detail.dart';
 import 'package:ditonton/domain/entities/season.dart';
@@ -80,6 +80,7 @@ final testMovieTable = MovieTable(
   title: 'title',
   posterPath: 'posterPath',
   overview: 'overview',
+  dataType: DataType.Movie.name,
 );
 
 final testTvShowTable = TvShowTable(
@@ -109,6 +110,7 @@ final testMovieCache = MovieTable(
       'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
   posterPath: '/rweIrveL43TaxUN0akQEaAXL6x0.jpg',
   title: 'Spider-Man',
+  dataType: DataType.Movie.name,
 );
 
 final testMovieCacheMap = {
@@ -138,19 +140,6 @@ final testTvShowDetail = TvShowDetail(
   inProduction: true,
   languages: ["en"],
   lastAirDate: "2020-01-01",
-  lastEpisodeToAir: LastEpisodeToAir(
-    airDate: "2020-10-10",
-    episodeNumber: 1,
-    id: 1,
-    name: "name",
-    overview: "overview",
-    productionCode: "",
-    runtime: 43,
-    seasonNumber: 11,
-    stillPath: "/path.jpg",
-    voteAverage: 9,
-    voteCount: 2,
-  ),
   name: "name",
   numberOfEpisodes: 1,
   numberOfSeasons: 1,
